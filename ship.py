@@ -12,7 +12,7 @@ class Ship:
         self.image = pygame.image.load('images/ship.bmp')
         self.rect = self.image.get_rect()
         #Start each new ship at the bottom center of the screen.
-        self.react.midbottom = self.screen_rect.midbottom
+        self.rect.midbottom = self.screen_rect.midbottom
 
     def blitme(self):
         """Draw the ship at its current location"""
