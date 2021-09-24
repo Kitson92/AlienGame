@@ -11,4 +11,4 @@ class settings:
         self.background_image = pygame.image.load('images/background.png')
 
         #ship settings
-        self.ship_speed = 1.5
+        self.ship_speed = 4
