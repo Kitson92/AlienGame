@@ -3,7 +3,7 @@ import sys
 import pygame
 
 from settings import settings
-from ship import Ship
+from ship import Ship, Ship
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior"""
@@ -17,24 +17,31 @@ class AlienInvasion:
             (self.settings.screen_width,self.settings.screen_height))
         pygame.display.set_caption("Alien Invasion")
 
-        self.ship = Ship(self)    
+        self.ship = Ship(self)
 
+    def _check_events(self):
+        """Respond to Keypresses and mouse events"""
+        for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RIGHT:
+                        #move ship to the right
+                        self.ship.rect.x += 1
+
+    def _update_screen(self):
+        """Update Images on the screen, and flip to the new screen"""
+        self.screen.blit(self.settings.background_image,(0,0))
+        self.ship.blitme()  
+        pygame.display.flip() 
 
     def run_game(self):
         """Start the main loop for the game."""
         while True:
-            #set game background
-            self.screen.blit(self.settings.background_image,(0,0))
-            
-            #Watch for keyboard and mouse events.
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
+            self._check_events()      
+            self._update_screen()   
 
-            #import ship image
-            self.ship.blitme()
-            """Make the most recently drawn screen visible"""
-            pygame.display.flip()
+            
 
 if __name__ == '__main__':
     # Make a game instance, and run the game
