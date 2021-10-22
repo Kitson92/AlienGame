@@ -4,6 +4,7 @@ import pygame
 from pygame.constants import FULLSCREEN
 from settings import settings
 from ship import Ship, Ship
+from bullet import Bullet
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior"""
@@ -21,10 +22,11 @@ class AlienInvasion:
         #Game Title
         pygame.display.set_caption("Alien Invasion")
  
-        
-
         #ship
         self.ship = Ship(self)
+
+        #bullets
+        self.bullets = pygame.sprite.Group()
         
     def _check_events(self):
         """Respond to Keypresses and mouse events"""
@@ -41,6 +43,10 @@ class AlienInvasion:
         self.screen.blit(self.settings.background_image,(0,0))
         self.screen.blit(self.settings.game_title,(0,0))
         self.ship.blitme()
+
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
+        
         pygame.display.update()  
         pygame.display.flip()
          
@@ -56,6 +62,8 @@ class AlienInvasion:
         # Press Q to quit the game    
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self,event):
         """Respond to key releases"""
@@ -64,16 +72,27 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False   
 
-    
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullets group"""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
 
     #Main game run
     
     def run_game(self):
         """Start the main loop for the game."""
         while True:          
-            self._check_events()      
+            self._check_events() 
+            self.ship.update()   
+            self.bullets.update()  
             self._update_screen()   
-            self.ship.update()
+
+            # get rid of bullets that have disappeared.
+            for bullet in self.bullets.copy():
+                if bullet.rect.bottom <= 0:
+                    self.bullets.remove(bullet)
+
+             
 
     #play background music        
     settings.music_play()       
