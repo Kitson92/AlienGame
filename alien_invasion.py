@@ -23,9 +23,13 @@ class AlienInvasion:
 
         #Game Title
         pygame.display.set_caption("Alien Invasion")
+
+        #Clock
+        self.clock = pygame.time.Clock()
  
         #ship
         self.ship = Ship(self)
+        
 
 
 
@@ -68,10 +72,8 @@ class AlienInvasion:
         """Repsond to keypresses"""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
-            print(event.key)
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
-            print(event.key)
         # Press Q to quit the game    
         elif event.key == pygame.K_q:
             sys.exit()
@@ -87,8 +89,9 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group"""
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)    
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)    
 
     def _create_fleet(self):
         """Create a fleet of aliens"""
@@ -128,12 +131,15 @@ class AlienInvasion:
             self._check_events() 
             self.ship.update()   
             self.bullets.update()  
-            self._update_screen()   
+            self._update_screen() 
+            self.clock.tick(15)
 
             # get rid of bullets that have disappeared.
             for bullet in self.bullets.copy():
                 if bullet.rect.bottom <= 0:
                     self.bullets.remove(bullet)
+            
+            
 
              
 
