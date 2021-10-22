@@ -17,13 +17,14 @@ class settings:
         self.game_title = self.font.render('Alien Invasion Version 1',True,(240,20,100))
         
         #ship settings
-        self.ship_speed = 2
+        self.ship_speed = 5
 
         #bullet settings
-        self.bullet_speed = 1.0
+        self.bullet_speed = 3.0
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_colour = (255,40,0)
+        self.bullets_allowed = 3
 
     def music_play():
             mixer.init()
